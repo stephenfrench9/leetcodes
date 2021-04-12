@@ -55,19 +55,19 @@ class Solution:
 
 case = "s"
 print(case)
-Solution.partition(Solution, case)
+print(Solution.partition(Solution, case))
 print()
 case = "ss"
 print(case)
-Solution.partition(Solution, case)
+print(Solution.partition(Solution, case))
 print()
 case = "sas"
 print(case)
-Solution.partition(Solution, case)
+print(Solution.partition(Solution, case))
 print()
 case = "aaba"
 print(case)
-Solution.partition(Solution, case)
+print(Solution.partition(Solution, case))
 print()
 
 # Well, behaviour looks right.
