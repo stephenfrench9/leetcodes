@@ -20,22 +20,15 @@ class Solution:
                 return 0
 
             if is_drome(cand):
-                found_parsing = parsing + [cand]
-                found_cand = rst[0]
-                found_rst = rst[1:]
-                chew(found_parsing, found_cand, found_rst)
+                chew(parsing + [cand], rst[0], rst[1:])
 
-            continue_parsing = parsing
-            continue_cand = cand + rst[0]
-            continue_rst = rst[1:]
-            chew(continue_parsing, continue_cand, continue_rst)
+            chew(parsing, cand + rst[0], rst[1:])
 
         parsing_init = []
         cand_init = s[0]
         rst_init = s[1:]
-
         chew(parsing_init, cand_init, rst_init)
-        print(answer)
+
         return answer
 
 # I am about to run this. I think this algorithm will print out all the possible palindrome parsings.
