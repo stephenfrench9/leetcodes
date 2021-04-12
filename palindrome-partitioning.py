@@ -8,7 +8,8 @@ class Solution:
         answer = []
 
         def is_drome(st):
-            return st == st[::-1]
+            return all([st[i] == st[-i-1] for i in range(len(st))])
+
 
         def chew(parsing, cand, rst):
 
