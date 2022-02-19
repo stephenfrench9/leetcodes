@@ -4,6 +4,30 @@ from typing import List
 
 class Solution:
     def coinChange(self, coins: List[int], amount: int) -> int:
+        # coin_number will be the coin_number at a given amount.
+        # coin_number@amount.
+        coin_number = [-1]*(amount+1)
+        coin_number[0] = 0
+
+        for amount_, coin_number_ in enumerate(coin_number):
+            if coin_number_ == -1:
+                continue
+            else:
+                for coin_value in coins:
+                    new_amount = amount_+coin_value
+                    if new_amount > amount:
+                        continue
+                    proposed_coin_number = coin_number_ + 1
+                    previous_coin_number = coin_number[new_amount]
+
+                    if previous_coin_number == -1:
+                        coin_number[new_amount] = proposed_coin_number
+                    else:
+                        coin_number[new_amount] = min(previous_coin_number, proposed_coin_number)
+
+        return coin_number[amount]
+
+    def coinChange_slow(self, coins: List[int], amount: int) -> int:
         solns = {0: []}  # {21:[(3, 5), (2, 3)]} is 3 5s and 2 3s for 5 total coins
 
         for c in coins:
