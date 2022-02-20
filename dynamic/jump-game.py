@@ -4,6 +4,16 @@ from typing import List
 
 class Solution:
     def canJump(self, nums: List[int]) -> bool:
+        max_index = 0
+        for i, v in enumerate(nums):
+            if i > max_index:
+                return False
+            else:
+                max_index = max(max_index, i + v)
+        return True
+
+
+    def canJump__too_slow__typical_dynamic_programming(self, nums: List[int]) -> bool:
         soln = [False]*len(nums)
         soln[0] = True
 
@@ -17,7 +27,7 @@ class Solution:
         return soln[-1]
 
 
-    def canJump__too_slow(self, nums: List[int]) -> bool:
+    def canJump__too_slow__full_tree(self, nums: List[int]) -> bool:
         if len(nums) == 1:
             return True
 
