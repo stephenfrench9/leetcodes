@@ -13,6 +13,25 @@ class Solution:
 
         return max(cost_1, cost_2)
 
+    def rob__general_solution(self, nums: List[int]) -> int:
+        paths = [(0, -2)] # (score, position)
+        for i, n in enumerate(nums):
+            for path in paths:
+                if path[1] + 1 < i:
+                    new_path = (path[0]+n, i)
+                    paths.append(new_path)
+                    break
+
+            paths.sort(key=lambda x: -x[0])
+            paths = paths[:3] # optional (still performant if removed)
+            # I am sorting paths on score, not position. It happens to be guarenteed
+            # that the most recent 3 positions are the higheset three scorers.
+            # it would likely be better to sort on position and then only keep the best three
+            # but to max that work, then you would have to choose the maximum ... this is sounding
+            # a lot like the solution above. 
+
+        return paths[0][0]
+
     def rob_fast_but_wierd(self, nums: List[int]) -> int:
         op = 0
         o = 0
@@ -28,4 +47,4 @@ class Solution:
 
 
 sol=Solution()
-print(sol.rob([1,2,5,100]))
+print(sol.rob__general_solution([1,2,5,100,1,1,1,3,4,15,25,1,1,2,4]))
