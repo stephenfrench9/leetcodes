@@ -14,20 +14,25 @@ class TreeNode:
 
 class Solution:
     def buildTree(self, preorder: list[int], inorder: list[int]) -> Optional[TreeNode]:
-        def helpe(inorder, preorder):
-            if not inorder or not preorder:
-                return None
+        def helpe(preorder, inorder):
+            if len(preorder) != len(inorder):
+                raise ValueError("invalid tree encoding")
+            if not preorder:
+                return
+            root_value = preorder[0]
+            root = TreeNode(root_value)
+            root_index_inorder = inorder.index(root_value)
 
-            root_val = preorder.pop(0)
-            root = TreeNode(root_val)
+            leftin = inorder[0:root_index_inorder]
+            rightin = inorder[root_index_inorder + 1 :]
+            leftpre = preorder[1 : root_index_inorder + 1]
+            rightpre = preorder[root_index_inorder + 1 :]
 
-            index = inorder.index(root_val)
-
-            root.left = helpe(inorder[:index], preorder[:index])
-            root.right = helpe(inorder[index + 1 :], preorder[index:])
+            root.left = helpe(leftpre, leftin)
+            root.right = helpe(rightpre, rightin)
             return root
 
-        return helpe(inorder, preorder)
+        return helpe(preorder, inorder)
 
 
 preorder = [3, 9, 20, 15, 7]
