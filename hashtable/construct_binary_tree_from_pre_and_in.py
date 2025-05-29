@@ -12,7 +12,7 @@ class TreeNode:
         self.right = right
 
 
-class Solution:
+class Solution0:
     def buildTree(self, preorder: list[int], inorder: list[int]) -> Optional[TreeNode]:
         def helpe(preorder, inorder):
             if len(preorder) != len(inorder):
@@ -33,6 +33,42 @@ class Solution:
             return root
 
         return helpe(preorder, inorder)
+
+
+class Solution:
+    """
+    This solution is the same strategy as the above, where the pre and in lists are passed to each function call explicitly, except it is indices only that are passed, to save memory and in the end the time it takes to make a ton of lists.
+
+    There is yet another solution possible, where you pass only the inorder list indices, and consume from the global preorder list. The end result is that each function in the call stack is lighter. This is conceptually more tricky to understand - you must convince your self that the preorder lists will be managed correctly because you are building the tree with a preorder traversal. The effect is that each call has a value from the preorder list that is the root of the subtree represented by the inorder list handed to it as an argument. Said another way, the way you build the callstack is in an inorder way - first the root, then then root of the leftsubtree, then the left of the right subtree, then the root of the left subtree of the left subtree, and the root of the right  .... and this is the same order of the roots that come out of the preorder list.
+    """
+
+    def buildTree(self, preorder: list[int], inorder: list[int]) -> Optional[TreeNode]:
+        inoindex = {value: index for index, value in enumerate(inorder)}
+
+        def supa(preo, ino):
+
+            if preo[1] - preo[0] != ino[1] - ino[0]:
+                raise ValueError("invalid tree encoding")
+            if preo[1] == preo[0]:
+                return
+
+            root_value = preorder[preo[0]]
+            root = TreeNode(root_value)
+            root_index_ino = inoindex[root_value]
+
+            ino_left = (ino[0], root_index_ino)
+            num_nodes_left = ino_left[1] - ino_left[0]
+            ino_right = (root_index_ino + 1, ino[1])
+            num_nodes_right = ino_right[1] - ino_right[0]
+
+            pre_left = (preo[0] + 1, preo[0] + 1 + num_nodes_left)
+            pre_right = (preo[0] + 1 + num_nodes_left, preo[1])
+
+            root.left = supa(pre_left, ino_left)
+            root.right = supa(pre_right, ino_right)
+            return root
+
+        return supa((0, len(preorder)), (0, len(inorder)))
 
 
 preorder = [3, 9, 20, 15, 7]
